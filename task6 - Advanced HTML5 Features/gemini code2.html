@@ -1,0 +1,38 @@
+//service-worker.js:
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open('static-cache').then(function(cache) {
+      return cache.addAll([
+        '/',
+        'index.html',
+        'style.css'
+      ]);
+    })
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      if (response) {
+        return response;
+      }
+      return fetch(event.request);
+    })
+  );
+});
+
+//index.html:
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Offline Capable Webpage</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>My Offline Webpage</h1>
+  <p>This webpage is cached and can be accessed even when offline.</p>
+</body>
+</html>

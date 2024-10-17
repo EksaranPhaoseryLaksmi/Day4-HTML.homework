@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Ball Game</title>
+    <style>
+        canvas {
+            border: 2px solid black;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center;">Bouncing Ball Game</h2>
+    
+    <!-- Canvas Element -->
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+    <script>
+        // Get the canvas and context
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Ball properties
+        let ballX = canvas.width / 2;  // Starting X position
+        let ballY = canvas.height / 2; // Starting Y position
+        let ballRadius = 20;           // Ball size
+        let ballSpeedX = 4;            // Horizontal speed
+        let ballSpeedY = 3;            // Vertical speed
+
+        // Function to get a random color
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        let ballColor = getRandomColor(); // Initial color
+
+        // Function to draw the ball
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = ballColor;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // Function to update the ball's position
+        function updateBallPosition() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the ball
+            drawBall();
+
+            // Update the ball's position
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Detect collision with left or right wall
+            if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
+                ballSpeedX = -ballSpeedX;  // Reverse horizontal direction
+                ballColor = getRandomColor();  // Change color
+            }
+
+            // Detect collision with top or bottom wall
+            if (ballY + ballRadius > canvas.height || ballY - ballRadius < 0) {
+                ballSpeedY = -ballSpeedY;  // Reverse vertical direction
+                ballColor = getRandomColor();  // Change color
+            }
+        }
+
+        // Function to animate the ball
+        function animate() {
+            updateBallPosition();
+            requestAnimationFrame(animate); // Loop the animation
+        }
+
+        // Start the animation
+        animate();
+    </script>
+
+</body>
+</html>

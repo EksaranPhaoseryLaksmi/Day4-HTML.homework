@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Favorite Hobby</title>
+</head>
+<body>
+
+  <h2>My Favorite Hobby: [Your Hobby]</h2>
+
+  <div>
+    <video width="560" height="315" controls>
+      <source src="[Video File Path]" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <br>
+    <button onclick="playVideo()">Play</button>
+    <button onclick="pauseVideo()">Pause</button>
+    <input type="range" min="0" max="1" step="0.01" id="videoVolume" oninput="setVideoVolume()">
+  </div>
+
+  <div>
+    <audio controls>
+      <source src="[Audio File Path]" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <br>
+    <button onclick="playAudio()">Play</button>
+    <button onclick="pauseAudio()">Pause</button>
+    <input type="range" min="0" max="1" step="0.01" id="audioVolume" oninput="setAudioVolume()">
+  </div>
+
+  <script>
+    var video = document.querySelector('video');
+    var audio = document.querySelector('audio');
+
+    function playVideo() {
+      video.play();
+    }
+
+    function pauseVideo() {
+      video.pause();
+    }
+
+    function setVideoVolume() {
+      video.volume = document.getElementById('videoVolume').value;
+    }
+
+    function playAudio() {
+      audio.play();
+    }
+
+    function pauseAudio() {
+      audio.pause();
+    }
+
+    function setAudioVolume() {
+      audio.volume = document.getElementById('audioVolume').value;
+    }
+  </script>
+
+</body>
+</html>

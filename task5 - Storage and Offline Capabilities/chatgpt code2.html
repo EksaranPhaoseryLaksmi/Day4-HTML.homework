@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Example</title>
+    <style>
+        #locationOutput {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Find Your Location</h2>
+    
+    <!-- Button to trigger geolocation -->
+    <button id="getLocationButton">Show My Location</button>
+
+    <!-- Output for location details -->
+    <div id="locationOutput"></div>
+
+    <script>
+        // Get the button and output div
+        const getLocationButton = document.getElementById('getLocationButton');
+        const locationOutput = document.getElementById('locationOutput');
+
+        // Function to display location
+        function displayLocation(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            locationOutput.innerHTML = Latitude: ${latitude}<br>Longitude: ${longitude};
+        }
+
+        // Function to handle errors
+        function handleError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    locationOutput.innerHTML = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    locationOutput.innerHTML = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    locationOutput.innerHTML = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    locationOutput.innerHTML = "An unknown error occurred.";
+                    break;
+            }
+        }
+
+        // Event listener for button click
+        getLocationButton.addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(displayLocation, handleError);
+            } else {
+                locationOutput.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        });
+    </script>
+
+</body>
+</html>

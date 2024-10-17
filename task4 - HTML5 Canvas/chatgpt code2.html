@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Drawing App</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Draw on the Canvas</h2>
+    
+    <!-- Canvas Element -->
+    <canvas id="drawCanvas" width="600" height="400"></canvas>
+
+    <script>
+        // Get the canvas and context
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Variables to keep track of the drawing state
+        let drawing = false;
+
+        // Function to start drawing
+        canvas.addEventListener('mousedown', function(e) {
+            drawing = true;
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY); // Start point of the line
+        });
+
+        // Function to draw
+        canvas.addEventListener('mousemove', function(e) {
+            if (drawing) {
+                ctx.lineTo(e.offsetX, e.offsetY); // Draw line to this point
+                ctx.strokeStyle = 'black'; // Set line color
+                ctx.lineWidth = 2; // Set line width
+                ctx.stroke(); // Draw the current path
+            }
+        });
+
+        // Function to stop drawing
+        canvas.addEventListener('mouseup', function() {
+            drawing = false;
+            ctx.closePath();
+        });
+
+        // If mouse leaves canvas, stop drawing
+        canvas.addEventListener('mouseleave', function() {
+            drawing = false;
+        });
+
+    </script>
+
+</body>
+</html>

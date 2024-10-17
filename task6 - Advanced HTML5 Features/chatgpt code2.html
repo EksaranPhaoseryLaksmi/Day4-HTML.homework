@@ -1,0 +1,90 @@
+// Create an index.html file:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Page Example</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Offline Webpage</h1>
+    </header>
+    <p>This webpage is designed to demonstrate how to use a service worker for offline access. You can view this content even when you're not connected to the internet!</p>
+
+    <script>
+        // Register the service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('service-worker.js')
+                .then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(function(error) {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+// Create a styles.css file to add some basic styling:
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    background: #007bff;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+// Create a service-worker.js file:
+const CACHE_NAME = 'v1';
+const CACHE_ASSETS = [
+    '/',
+    'index.html',
+    'styles.css',
+];
+
+// Install event
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+        .then(cache => {
+            console.log('Caching files');
+            return cache.addAll(CACHE_ASSETS);
+        })
+    );
+});
+
+// Fetch event
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        fetch(event.request)
+        .catch(() => caches.match(event.request))
+    );
+});
+
+// Activate event
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('Removing old cache', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+});
